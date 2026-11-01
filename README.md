@@ -1,214 +1,169 @@
-# Домашнее задание к занятию «Продвинутые методы работы с Terraform» - Розаев А.Ю.
+# Домашнее задание к занятию «Использование Terraform в команде» - Розаев А.Ю.
 
 ### Цели задания
 
-1. Научиться использовать модули.
-2. Отработать операции state.
-3. Закрепить пройденный материал.
+1. Научиться использовать remote state с блокировками.
+2. Освоить приёмы командной работы.
 
 ### Чек-лист готовности к домашнему заданию
 
 1. Зарегистрирован аккаунт в Yandex Cloud. Использован промокод на грант.
 2. Установлен инструмент Yandex CLI.
-3. Исходный код взят из директории [**04/src**](https://github.com/netology-code/ter-homeworks/tree/main/04/src).
-4. Любые ВМ, использованные при выполнении задания - прерываемые, для экономии средств.
+3. Любые ВМ, использованные при выполнении задания, должны быть прерываемыми, для экономии средств.
 
 ------
+### Внимание!! Обязательно предоставляем на проверку получившийся код в виде ссылки на ваш github-репозиторий!
+Убедитесь что ваша версия **Terraform** ~>1.12.0
+Пишем красивый код, хардкод значения не допустимы!
+
+------
+### Задание 0
+1. Прочтите статью: https://neprivet.com/
+2. Пожалуйста, распространите данную идею в своем коллективе.
+
+---
 
 ### Задание 1
 
-1. Из [демонстрации к лекции](https://github.com/netology-code/ter-homeworks/tree/main/04/demonstration1) взят готовый код для создания с помощью двух вызовов remote-модуля -> двух ВМ, относящихся к разным проектам (marketing и analytics) для обозначения принадлежности использованы labels.  В файле cloud-init.yml использована переменная для ssh-ключа вместо хардкода. Ssh-ключ передан в функцию template_file в блоке vars ={},
-[**пример**](https://oneuptime.com/blog/post/2026-03-02-how-to-use-cloud-init-with-terraform-for-ubuntu-provisioning/view).
-3. В файл cloud-init.yml добавлена установка nginx.
-4. Ниже приложены 
-- скриншоты подключения к консоли и вывод команды ```sudo nginx -t```
-- скриншот консоли ВМ yandex cloud с их метками
-- скриншот terraform console с содержимым модуля
+1. Проверен код:
+- из [ДЗ к лекции 4](https://github.com/netology-code/ter-homeworks/tree/main/04/src),
+- из [демо к лекции 4](https://github.com/netology-code/ter-homeworks/tree/main/04/demonstration1).
+2. Проверка кода выполнена с помощью tflint и checkov.
+3. В проекте (без дублей), обнаружены следующие **типы** ошибок:
 
-![1_1](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_1.png)
 
-![1_2](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_2.png)
+1. По отчету Checkov (Безопасность и цепочка поставок):
 
-![1_3](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_3.png)
+• Использование изменяемых источников модулей без фиксации коммита (CKV_TF_1): Ссылка на динамическую ветку Git (?ref=main) вместо конкретного хэша коммита (SHA-1).
+• Отсутствие релизного тега версии для удаленных модулей (CKV_TF_2): Импорт модулей напрямую из ветки репозитория без указания фиксированного семантического тега версии (например, ?ref=v1.0.0).
 
-![1_4](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_4.png)
+2. По отчету TFLint (Синтаксис и качество HCL-кода):
 
-![1_5](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_5.png)
-
-![1_6](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_6.png)
-
-![1_7](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_7.png)
-
-![1_8](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_8.png)
-
-![1_9](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_9.png)
-
-![1_10](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_10.png)
-
-![1_11](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_1_11.png)
+• Отсутствие ограничений версий для провайдеров (terraform_required_providers): Провайдеры yandex, random и template объявлены в коде без указания конкретных версий в блоке required_providers.
+• Неиспользуемые переменные (terraform_unused_declarations): Переменные vms_ssh_root_key, vm_web_name, vm_db_name и public_key задекларированы в конфигурации, но нигде не вызываются.
 
 ---
 
 ### Задание 2
 
-1. Написан локальный модуль vpc, который создает 2 ресурса: **одну** сеть и **одну** подсеть в зоне, объявленной при вызове модуля.
-Вызов модуля
-```
-module "vpc_dev" {
-  source           = "./modules/vpc"
-  env_name         = var.env_name
-  zone             = var.default_zone
-  v4_cidr_blocks   = "10.0.1.0/24"
-}
-```
+1. Возьмите ваш GitHub-репозиторий с **выполненным ДЗ 4** в ветке 'terraform-04' и сделайте из него ветку 'terraform-05'.
+2. Настройте remote state с встроенными блокировками:
+   - Создайте S3 bucket в Yandex Cloud для хранения state (если еще не создан)
+   - Создайте service account с правами на чтение/запись в bucket
+   - Настройте backend в providers.tf с использованием нового механизма блокировок:
+     ```hcl
+     terraform {
+       required_version = "~>1.12.0"
+       
+       backend "s3" {
+         bucket  = "ваш-bucket-name"
+         key     = "terraform.tfstate"
+         region  = "ru-central1"
+         
+         # Встроенный механизм блокировок (Terraform >= 1.6)
+         # Не требует отдельной базы данных!
+         use_lockfile = true
+         
+         endpoints = {
+           s3 = "https://storage.yandexcloud.net"
+         }
+         
+         skip_region_validation      = true
+         skip_credentials_validation = true
+         skip_requesting_account_id  = true
+         skip_s3_checksum            = true
+       }
+     }
+     ```
+   - Выполните `terraform init -migrate-state` для миграции state в S3
+   - Предоставьте скриншоты процесса настройки и миграции
+3. Закоммитьте в ветку 'terraform-05' все изменения.
+4. Откройте в проекте terraform console, а в другом окне из этой же директории попробуйте запустить terraform apply.
+5. Пришлите ответ об ошибке доступа к state (блокировка должна сработать автоматически).
+6. Принудительно разблокируйте state командой `terraform force-unlock <LOCK_ID>`. Пришлите команду и вывод.
 
-2. В модуль переданы переменные с названием сети, zone и v4_cidr_blocks.
+**Примечание:** В Terraform >= 1.6 появился встроенный механизм блокировок через `use_lockfile = true`. 
+Это упрощает настройку - больше не нужно создавать отдельную базу данных (YDB в режиме DynamoDB) для хранения блокировок.
+Lock-файл создается автоматически в том же S3 bucket рядом с state-файлом с именем `<key>.lock.info`.
 
-3. Модуль возвращает в root module с помощью output информацию о yandex_vpc_subnet. 
-Скриншот информации из terraform console о модуле:
 
-![2_3_1](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_2_3_1.png)
+---
+### Задание 3  
 
-![2_3_2](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_2_3_2.png)
-
-4. Ресурсы yandex_vpc_network и yandex_vpc_subnet заменены созданным модулем.
-5. Сгенерирована документация к модулю с помощью terraform-docs.
-
-![2_5](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_2_5.png)
+1. Сделайте в GitHub из ветки 'terraform-05' новую ветку 'terraform-hotfix'.
+2. Проверье код с помощью tflint и checkov, исправьте все предупреждения и ошибки в 'terraform-hotfix', сделайте коммит.
+3. Откройте новый pull request 'terraform-hotfix' --> 'terraform-05'. 
+4. Вставьте в комментарий PR результат анализа tflint и checkov, план изменений инфраструктуры из вывода команды terraform plan.
+5. Пришлите ссылку на PR для ревью. Вливать код в 'terraform-05' не нужно.
 
 ---
 
-### Задание 3
-1. Выведен список ресурсов в стейте.
-```
-terraform state list
-```
-2. Полностью удален из стейта модуль vpc.
-```
-terraform state rm module.vpc_dev
-```
-3. Полностью удален из стейта модуль vm.
-```
-terraform state rm module.marketing_vm
-terraform state rm module.analytics_vm
-```
-4. Всё импортировано обратно. 
-```
-terraform import module.vpc_dev.yandex_vpc_network.vpc_dev enp9da6l29dab0p0vs1v
-terraform import module.vpc_dev.yandex_vpc_subnet.vpc_dev fl8ockr2ph6s02lg6e6k
-terraform import 'module.marketing_vm.yandex_compute_instance.vm[0]' fv45t7pr6vn3083m62bj
-terraform import 'module.analytics_vm.yandex_compute_instance.vm[0]' fv4suv879g14lhe9ss25
-```
-Проверен terraform plan. Значимых изменений нет.
+### Задание 4
 
-![3_4_1](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_3_4_1.png)
+1. Напишите переменные с валидацией и протестируйте их, заполнив default верными и неверными значениями. Предоставьте скриншоты проверок из terraform console. 
 
-![3_4_2](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_3_4_2.png)
-
-![3_4_3](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_3_4_3.png)
-
-------
+- type=string, description="ip-адрес" — проверка, что значение переменной содержит верный IP-адрес с помощью функций cidrhost() или regex(). Тесты:  "192.168.0.1" и "1920.1680.0.1";
+- type=list(string), description="список ip-адресов" — проверка, что все адреса верны. Тесты:  ["192.168.0.1", "1.1.1.1", "127.0.0.1"] и ["192.168.0.1", "1.1.1.1", "1270.0.0.1"].
 
 ## Дополнительные задания (со звёздочкой*)
 
+**Настоятельно рекомендуем выполнять все задания со звёздочкой.** Их выполнение поможет глубже разобраться в материале.   
+Задания со звёздочкой дополнительные, не обязательные к выполнению и никак не повлияют на получение вами зачёта по этому домашнему заданию. 
+
 ------
 
-### Задание 4*
-
-1. Модуль vpc изменен так, чтобы он мог создать подсети во всех зонах доступности, переданных в переменной типа list(object) при вызове модуля.
-Вызов модуля:
+### Задание 5*
+1. Напишите переменные с валидацией:
+- type=string, description="любая строка" — проверка, что строка не содержит символов верхнего регистра;
+- type=object — проверка, что одно из значений равно true, а второе false, т. е. не допускается false false и true true:
 ```
-module "vpc_dev" {
-  source   = "./modules/vpc"
-  env_name = "develop"
-  subnets = [
-    { zone = "ru-central1-d", cidr = "10.0.1.0/24" },
-    { zone = "ru-central1-e", cidr = "10.0.2.0/24" }
-  ]
+variable "in_the_end_there_can_be_only_one" {
+    description="Who is better Connor or Duncan?"
+    type = object({
+        Dunkan = optional(bool)
+        Connor = optional(bool)
+    })
+
+    default = {
+        Dunkan = true
+        Connor = false
+    }
+
+    validation {
+        error_message = "There can be only one MacLeod"
+        condition = <проверка>
+    }
 }
 ```
-План выполнения, результат из консоли YC.
-
-![4_1_1](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_4_1_1.png)
-
-![4_1_2](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_4_1_2.png)
-
-![4_1_3](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_4_1_3.png)
-
-![4_1_4](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_4_1_4.png)
-
-![4_1_5](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_4_1_5.png)
-
----
-
-### Задание 5*
-
-1. Написан модуль для создания кластера managed БД Mysql в Yandex Cloud с одним или несколькими(2 по умолчанию) хостами в зависимости от переменной HA=true или HA=false. Использован ресурс yandex_mdb_mysql_cluster для передачи имени кластера и id сети.
-2. Написан модуль для создания базы данных и пользователя в уже существующем кластере managed БД Mysql. Использован ресурс yandex_mdb_mysql_database и yandex_mdb_mysql_user для передачи имени базы данных, имени пользователя и id кластера при вызове модуля.
-3. С помощью данных модулей, создан кластер example из одного хоста, а затем добавлен в него БД test и пользователя app. После создания кластера изменена переменая HA и в кластер второй сервер.
-4. Скриншоты результата.
-
-![3_4_1](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_3_4_1.png)
-
-![3_4_2](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_3_4_2.png)
-
 ---
 
 ### Задание 6*
-1. Использован готовый yandex cloud terraform module и пример его вызова(examples/simple-bucket): https://github.com/terraform-yc-modules/terraform-yc-s3 .
-Создан s3 бакет размером 1 ГБ.
 
-![6](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_6.png)
+1. Настройте любую известную вам CI/CD-систему. Если вы ещё не знакомы с CI/CD-системами, настоятельно рекомендуем вернуться к этому заданию после изучения Jenkins/Teamcity/Gitlab.
+2. Скачайте с её помощью ваш репозиторий с кодом и инициализируйте инфраструктуру.
+3. Уничтожьте инфраструктуру тем же способом.
 
 ---
 
 ### Задание 7*
 
-1. Развернут локально vault, с помощью docker-compose.yml в проекте.
+1. Настройте отдельный terraform root модуль, который будет создавать инфраструктуру для remote state:
+   - S3 bucket для tfstate с версионированием
+   - Сервисный аккаунт с необходимыми правами (storage.editor)
+   - Static access key для сервисного аккаунта
+2. Output должен содержать:
+   - Имя bucket
+   - Access key ID и Secret key (sensitive)
+   - Пример конфигурации backend для использования
+3. После создания инфраструктуры используйте outputs для настройки backend в основном проекте.
 
-![7_1](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_7_1.png)
+**Примечание:** Так как используется `use_lockfile = true`, создавать YDB/DynamoDB больше не требуется.
+Блокировки реализованы встроенным механизмом Terraform и хранятся в том же S3 bucket. 
 
-2. Выполнен вход в web-интерфейс и авторизация terraform в vault использован токен "education".
+### Правила приёма работы
 
-![7_2](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_7_2.png)
+Ответы на задания и необходимые скриншоты оформите в md-файле в ветке terraform-05.
 
-3. Создан новый секрет по пути http://127.0.0.1:8200/ui/vault/secrets/secret/create
-Path: example
-secret data key: test
-secret data value: congrats!
+В качестве результата прикрепите ссылку на ветку terraform-05 в вашем репозитории.
 
-![7_3](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_7_3.png)
-
-4. Этот секрет считан с помощью terraform и выведен в output:
-
-```
-provider "vault" {
-  address         = "http://127.0.0.1:8200"
-  skip_tls_verify = true
-  token           = "education"
-}
-data "vault_generic_secret" "vault_example" {
-  path = "secret/example"
-}
-
-output "vault_example" {
-  value       = "${nonsensitive(data.vault_generic_secret.vault_example.data)}"
-}
-```
-
-![7_4](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_7_4.png)
-
-5. Записать новый секрет в vault с помощью terraform.
-
-![7_5](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_7_5.png)
-
----
-
-### Задание 8*
-C помощью terraform remote state разделен root модуль на два отдельных root-модуля: создание VPC (./modul-vpc), создание ВМ (./modul-vm).
-
-![8_1](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_8_1.png)
-
-![8_2](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_8_2.png)
-
-![8_3](https://github.com/expgt/net-fops-hw-15-4/blob/terraform-04/15_4_8_3.png)
+**Важно.** Удалите все созданные ресурсы.
