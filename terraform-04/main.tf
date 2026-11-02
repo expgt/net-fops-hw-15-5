@@ -40,7 +40,7 @@ module "marketing_vm" {
 
   labels = { 
     owner= var.label_owner,
-    project = "marketing"
+    project = "marketing1"
      }
 
   metadata = {
@@ -66,7 +66,7 @@ module "analytics_vm" {
 
   labels = { 
   owner= var.label_owner,
-  project = "analytics"
+  project = "analytics1"
     }
 
   metadata = {

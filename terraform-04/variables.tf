@@ -107,7 +107,7 @@ variable "ssh_public_key" {
   description = "ssh public key"
 }
 
-variable "db_password" {
-  type = string
-  description = "db password"
-}
+# variable "db_password" {
+#   type = string
+#   description = "db password"
+# }
