@@ -43,7 +43,7 @@ data "terraform_remote_state" "vpc" {
 }
 
 module "marketing_vm" {
-  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=de7090ae115ee5059cd81053a808af079c325e01"
   env_name       = var.env_name
   instance_name  = "marketing"
   instance_count = var.instance_count
@@ -63,7 +63,7 @@ module "marketing_vm" {
 }
 
 module "analytics_vm" {
-  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=de7090ae115ee5059cd81053a808af079c325e01"
   env_name       = var.env_name
   instance_name  = "analytics"
   instance_count = var.instance_count

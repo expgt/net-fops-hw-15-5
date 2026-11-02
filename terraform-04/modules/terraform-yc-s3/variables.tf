@@ -62,7 +62,7 @@ variable "acl" {
     For more information see https://cloud.yandex.com/en/docs/storage/concepts/acl#predefined-acls.
   EOF
   type        = string
-  default     = null
+  default     = "private"
 }
 
 variable "grant" {
