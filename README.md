@@ -103,7 +103,7 @@
 ![2_2_6](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_2_6.png)
 
 
-3. Закоммичены в ветку 'terraform-05' все изменения.
+3. В ветку 'terraform-05' закоммичены все изменения.
 4. В первом окне теминала выполнен terraform apply, в другом окне из этой же директории запущен terraform plan.
 5. Ответ об ошибке доступа к state.
 
@@ -217,7 +217,7 @@ variable "in_the_end_there_can_be_only_one" {
 
 ![6_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_6_2_3.png)
 
-3. Уничтожена инфраструктура через CI/CD-систему.
+3. Инфраструктура уничтожена через CI/CD-систему.
 
 ![6_3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_6_3_1.png)
 
