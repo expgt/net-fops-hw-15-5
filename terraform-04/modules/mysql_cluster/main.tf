@@ -3,7 +3,8 @@ resource "yandex_mdb_mysql_cluster" "mysql_cluster" {
   environment = "PRESTABLE"
   network_id  = var.network_id
   version     = "8.0"
-
+  security_group_ids = [yandex_vpc_security_group.db_sg.id]
+  
   resources {
     resource_preset_id = "s2.micro"
     disk_type_id       = "network-hdd"

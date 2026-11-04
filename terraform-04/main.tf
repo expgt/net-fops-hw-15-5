@@ -25,7 +25,7 @@ module "vpc_dev" {
 }
 
 module "marketing_vm" {
-  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=de7090ae115ee5059cd81053a808af079c325e01"
   env_name       = var.env_name
   network_id   = module.vpc_dev.network_id
   #subnet_zones   = [var.default_zone]
@@ -51,7 +51,7 @@ module "marketing_vm" {
 }
 
 module "analytics_vm" {
-  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=de7090ae115ee5059cd81053a808af079c325e01"
   env_name       = var.env_name
   network_id   = module.vpc_dev.network_id
   #subnet_zones   = [var.default_zone]
