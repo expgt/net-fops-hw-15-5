@@ -42,15 +42,28 @@
 • Отсутствие ограничений версий для провайдеров (terraform_required_providers): Провайдеры yandex, random и template объявлены в коде без указания конкретных версий в блоке required_providers.
 • Неиспользуемые переменные (terraform_unused_declarations): Переменные vms_ssh_root_key, vm_web_name, vm_db_name и public_key задекларированы в конфигурации, но нигде не вызываются.
 
+![1_3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_1.png)
+
+![1_3_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_2.png)
+
+![1_3_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_3.png)
+
+![1_3_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_4.png)
+
+![1_3_5](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_5.png)
+
 ---
 
 ### Задание 2
 
-1. Возьмите ваш GitHub-репозиторий с **выполненным ДЗ 4** в ветке 'terraform-04' и сделайте из него ветку 'terraform-05'.
-2. Настройте remote state с встроенными блокировками:
-   - Создайте S3 bucket в Yandex Cloud для хранения state (если еще не создан)
-   - Создайте service account с правами на чтение/запись в bucket
-   - Настройте backend в providers.tf с использованием нового механизма блокировок:
+1. Из GitHub-репозитория с **выполненным ДЗ 4** в ветке 'terraform-04' сделана ветка 'terraform-05'.
+
+![2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_1.png)
+
+2. Настроен remote state с встроенными блокировками:
+   - Создан S3 bucket в Yandex Cloud для хранения state
+   - Создан service account назначены права на чтение/запись в bucket
+   - Настроен backend в providers.tf с использованием нового механизма блокировок:
      ```hcl
      terraform {
        required_version = "~>1.12.0"
@@ -75,45 +88,91 @@
        }
      }
      ```
-   - Выполните `terraform init -migrate-state` для миграции state в S3
-   - Предоставьте скриншоты процесса настройки и миграции
-3. Закоммитьте в ветку 'terraform-05' все изменения.
-4. Откройте в проекте terraform console, а в другом окне из этой же директории попробуйте запустить terraform apply.
-5. Пришлите ответ об ошибке доступа к state (блокировка должна сработать автоматически).
-6. Принудительно разблокируйте state командой `terraform force-unlock <LOCK_ID>`. Пришлите команду и вывод.
+   - Выполнен `terraform init -reconfigure` для миграции state в S3
+   - Скриншоты процесса настройки и миграции
 
-**Примечание:** В Terraform >= 1.6 появился встроенный механизм блокировок через `use_lockfile = true`. 
-Это упрощает настройку - больше не нужно создавать отдельную базу данных (YDB в режиме DynamoDB) для хранения блокировок.
-Lock-файл создается автоматически в том же S3 bucket рядом с state-файлом с именем `<key>.lock.info`.
+![2_2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_1.png)
 
+![2_2_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_2.png)
+
+![2_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_3.png)
+
+![2_2_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_4.png)
+
+![2_2_5](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_5.png)
+
+![2_2_5](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_5.png)
+
+![2_2_6](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_6.png)
+
+
+3. Закоммичены в ветку 'terraform-05' все изменения.
+4. В первом окне теминала выполнен terraform apply, в другом окне из этой же директории запущен terraform plan.
+5. Ответ об ошибке доступа к state.
+
+![2_5_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_5_1.png)
+
+![2_5_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_5_2.png)
+
+6. Принудительно разблокирован state командой `terraform force-unlock <LOCK_ID>`.
+Команду и вывод:
+
+![2_6](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_6.png)
 
 ---
+
 ### Задание 3  
 
-1. Сделайте в GitHub из ветки 'terraform-05' новую ветку 'terraform-hotfix'.
-2. Проверье код с помощью tflint и checkov, исправьте все предупреждения и ошибки в 'terraform-hotfix', сделайте коммит.
-3. Откройте новый pull request 'terraform-hotfix' --> 'terraform-05'. 
-4. Вставьте в комментарий PR результат анализа tflint и checkov, план изменений инфраструктуры из вывода команды terraform plan.
-5. Пришлите ссылку на PR для ревью. Вливать код в 'terraform-05' не нужно.
+1. В GitHub из ветки 'terraform-05' сделана новая ветка 'terraform-hotfix'.
+
+![3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_1.png)
+
+2. Код проверен с помощью tflint и checkov, исправлены все предупреждения и ошибки в 'terraform-hotfix', сделан коммит.
+
+![3_2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_2_1.png)
+
+![3_2_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_2_2.png)
+
+![3_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_2_3.png)
+
+![3_2_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_2_4.png)
+
+3. Открыт новый pull request 'terraform-hotfix' --> 'terraform-05'.
+
+![3_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_3.png)
+
+4. В комментарий PR вставлен результат анализа tflint и checkov, план изменений инфраструктуры из вывода команды terraform plan.
+
+![3_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_4.png)
+
+5. Ссылка на PR для ревью.
+
+[Pull_Request](https://github.com/expgt/net-fops-hw-15-5/pull/1)
+
 
 ---
 
 ### Задание 4
 
-1. Напишите переменные с валидацией и протестируйте их, заполнив default верными и неверными значениями. Предоставьте скриншоты проверок из terraform console. 
+1. Написаны переменные с валидацией и протестированы, заполнением default верными и неверными значениями.
 
 - type=string, description="ip-адрес" — проверка, что значение переменной содержит верный IP-адрес с помощью функций cidrhost() или regex(). Тесты:  "192.168.0.1" и "1920.1680.0.1";
 - type=list(string), description="список ip-адресов" — проверка, что все адреса верны. Тесты:  ["192.168.0.1", "1.1.1.1", "127.0.0.1"] и ["192.168.0.1", "1.1.1.1", "1270.0.0.1"].
 
-## Дополнительные задания (со звёздочкой*)
+Скриншоты проверок из terraform console:
 
-**Настоятельно рекомендуем выполнять все задания со звёздочкой.** Их выполнение поможет глубже разобраться в материале.   
-Задания со звёздочкой дополнительные, не обязательные к выполнению и никак не повлияют на получение вами зачёта по этому домашнему заданию. 
+![4_1_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_4_1_1.png)
+
+![4_1_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_4_1_2.png)
 
 ------
 
+## Дополнительные задания (со звёздочкой*)
+
+---
+
 ### Задание 5*
-1. Напишите переменные с валидацией:
+1. Написаны переменные с валидацией:
 - type=string, description="любая строка" — проверка, что строка не содержит символов верхнего регистра;
 - type=object — проверка, что одно из значений равно true, а второе false, т. е. не допускается false false и true true:
 ```
@@ -135,35 +194,57 @@ variable "in_the_end_there_can_be_only_one" {
     }
 }
 ```
+
+![5_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_5_1.png)
+
+![5_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_5_2.png)
+
+![5_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_5_3.png)
+
+
 ---
 
 ### Задание 6*
 
-1. Настройте любую известную вам CI/CD-систему. Если вы ещё не знакомы с CI/CD-системами, настоятельно рекомендуем вернуться к этому заданию после изучения Jenkins/Teamcity/Gitlab.
-2. Скачайте с её помощью ваш репозиторий с кодом и инициализируйте инфраструктуру.
-3. Уничтожьте инфраструктуру тем же способом.
+1. Настроена CI/CD-система GitLab.
+
+![6_1_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_1_1.png)
+
+![6_1_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_1_2.png)
+
+2. С её помощью скачан репозиторий с кодом и инициализирована инфраструктура.
+
+![6_2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_2_1.png)
+
+![6_2_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_2_2.png)
+
+![6_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_2_3.png)
+
+3. Уничтожена инфраструктура через CI/CD-систему.
+
+![6_3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_3_1.png)
+
+![6_3_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_3_2.png)
+
 
 ---
 
 ### Задание 7*
 
-1. Настройте отдельный terraform root модуль, который будет создавать инфраструктуру для remote state:
+1. Настроен отдельный terraform root модуль (terraform-04/modules/infrastructure), который создает инфраструктуру для remote state:
    - S3 bucket для tfstate с версионированием
    - Сервисный аккаунт с необходимыми правами (storage.editor)
    - Static access key для сервисного аккаунта
-2. Output должен содержать:
+2. Output содержит:
    - Имя bucket
    - Access key ID и Secret key (sensitive)
    - Пример конфигурации backend для использования
-3. После создания инфраструктуры используйте outputs для настройки backend в основном проекте.
 
-**Примечание:** Так как используется `use_lockfile = true`, создавать YDB/DynamoDB больше не требуется.
-Блокировки реализованы встроенным механизмом Terraform и хранятся в том же S3 bucket. 
+![7_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_7_1.png)
 
-### Правила приёма работы
+![7_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_7_2.png)
 
-Ответы на задания и необходимые скриншоты оформите в md-файле в ветке terraform-05.
 
-В качестве результата прикрепите ссылку на ветку terraform-05 в вашем репозитории.
+3. После создания инфраструктуры outputs использован для настройки backend в основном проекте (terraform-04).
 
-**Важно.** Удалите все созданные ресурсы.
+![7_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_7_3.png)
