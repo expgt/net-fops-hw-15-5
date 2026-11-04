@@ -42,15 +42,15 @@
 • Отсутствие ограничений версий для провайдеров (terraform_required_providers): Провайдеры yandex, random и template объявлены в коде без указания конкретных версий в блоке required_providers.
 • Неиспользуемые переменные (terraform_unused_declarations): Переменные vms_ssh_root_key, vm_web_name, vm_db_name и public_key задекларированы в конфигурации, но нигде не вызываются.
 
-![1_3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_1.png)
+![1_3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_1_3_1.png)
 
-![1_3_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_2.png)
+![1_3_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_1_3_2.png)
 
-![1_3_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_3.png)
+![1_3_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_1_3_3.png)
 
-![1_3_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_4.png)
+![1_3_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_1_3_4.png)
 
-![1_3_5](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_1_3_5.png)
+![1_3_5](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_1_3_5.png)
 
 ---
 
@@ -58,7 +58,7 @@
 
 1. Из GitHub-репозитория с **выполненным ДЗ 4** в ветке 'terraform-04' сделана ветка 'terraform-05'.
 
-![2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_1.png)
+![2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_1.png)
 
 2. Настроен remote state с встроенными блокировками:
    - Создан S3 bucket в Yandex Cloud для хранения state
@@ -91,33 +91,33 @@
    - Выполнен `terraform init -reconfigure` для миграции state в S3
    - Скриншоты процесса настройки и миграции
 
-![2_2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_1.png)
+![2_2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_2_1.png)
 
-![2_2_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_2.png)
+![2_2_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_2_2.png)
 
-![2_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_3.png)
+![2_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_2_3.png)
 
-![2_2_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_4.png)
+![2_2_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_2_4.png)
 
-![2_2_5](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_5.png)
+![2_2_5](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_2_5.png)
 
-![2_2_5](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_5.png)
+![2_2_5](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_2_5.png)
 
-![2_2_6](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_2_6.png)
+![2_2_6](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_2_6.png)
 
 
 3. Закоммичены в ветку 'terraform-05' все изменения.
 4. В первом окне теминала выполнен terraform apply, в другом окне из этой же директории запущен terraform plan.
 5. Ответ об ошибке доступа к state.
 
-![2_5_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_5_1.png)
+![2_5_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_5_1.png)
 
-![2_5_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_5_2.png)
+![2_5_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_5_2.png)
 
 6. Принудительно разблокирован state командой `terraform force-unlock <LOCK_ID>`.
 Команду и вывод:
 
-![2_6](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_2_6.png)
+![2_6](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_2_6.png)
 
 ---
 
@@ -125,25 +125,25 @@
 
 1. В GitHub из ветки 'terraform-05' сделана новая ветка 'terraform-hotfix'.
 
-![3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_1.png)
+![3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_3_1.png)
 
 2. Код проверен с помощью tflint и checkov, исправлены все предупреждения и ошибки в 'terraform-hotfix', сделан коммит.
 
-![3_2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_2_1.png)
+![3_2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_3_2_1.png)
 
-![3_2_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_2_2.png)
+![3_2_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_3_2_2.png)
 
-![3_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_2_3.png)
+![3_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_3_2_3.png)
 
-![3_2_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_2_4.png)
+![3_2_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_3_2_4.png)
 
 3. Открыт новый pull request 'terraform-hotfix' --> 'terraform-05'.
 
-![3_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_3.png)
+![3_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_3_3.png)
 
 4. В комментарий PR вставлен результат анализа tflint и checkov, план изменений инфраструктуры из вывода команды terraform plan.
 
-![3_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_3_4.png)
+![3_4](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_3_4.png)
 
 5. Ссылка на PR для ревью.
 
@@ -161,9 +161,9 @@
 
 Скриншоты проверок из terraform console:
 
-![4_1_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_4_1_1.png)
+![4_1_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_4_1_1.png)
 
-![4_1_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_4_1_2.png)
+![4_1_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_4_1_2.png)
 
 ------
 
@@ -195,11 +195,11 @@ variable "in_the_end_there_can_be_only_one" {
 }
 ```
 
-![5_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_5_1.png)
+![5_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_5_1.png)
 
-![5_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_5_2.png)
+![5_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_5_2.png)
 
-![5_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_5_3.png)
+![5_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_5_3.png)
 
 
 ---
@@ -208,23 +208,23 @@ variable "in_the_end_there_can_be_only_one" {
 
 1. Настроена CI/CD-система GitLab.
 
-![6_1_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_1_1.png)
+![6_1_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_6_1_1.png)
 
-![6_1_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_1_2.png)
+![6_1_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_6_1_2.png)
 
 2. С её помощью скачан репозиторий с кодом и инициализирована инфраструктура.
 
-![6_2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_2_1.png)
+![6_2_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_6_2_1.png)
 
-![6_2_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_2_2.png)
+![6_2_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_6_2_2.png)
 
-![6_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_2_3.png)
+![6_2_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_6_2_3.png)
 
 3. Уничтожена инфраструктура через CI/CD-систему.
 
-![6_3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_3_1.png)
+![6_3_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_6_3_1.png)
 
-![6_3_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_6_3_2.png)
+![6_3_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_6_3_2.png)
 
 
 ---
@@ -240,11 +240,11 @@ variable "in_the_end_there_can_be_only_one" {
    - Access key ID и Secret key (sensitive)
    - Пример конфигурации backend для использования
 
-![7_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_7_1.png)
+![7_1](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_7_1.png)
 
-![7_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_7_2.png)
+![7_2](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_7_2.png)
 
 
 3. После создания инфраструктуры outputs использован для настройки backend в основном проекте (terraform-04).
 
-![7_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-04/15_5_7_3.png)
+![7_3](https://github.com/expgt/net-fops-hw-15-5/blob/terraform-05/15_5_7_3.png)
